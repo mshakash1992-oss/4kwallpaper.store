@@ -1,7 +1,7 @@
 import type { MetadataRoute } from "next";
 import { categories, wallpapers } from "@/lib/data";
 import { absoluteUrl } from "@/lib/site";
-
+changeFrequency:"weekly" as const
 export default function sitemap(): MetadataRoute.Sitemap {
   const staticPages: MetadataRoute.Sitemap = [
     "",
