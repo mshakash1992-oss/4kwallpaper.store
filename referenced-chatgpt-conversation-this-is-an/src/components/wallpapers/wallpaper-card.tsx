@@ -1,0 +1,5 @@
+import Image from "next/image";
+import Link from "next/link";
+import type { Wallpaper, Category, Tag } from "@prisma/client";
+type CardWallpaper = Wallpaper & { categories: { category: Category }[]; tags: { tag: Tag }[] };
+export function WallpaperCard({ wallpaper, priority = false }: { wallpaper: CardWallpaper; priority?: boolean }) { return <article className="group overflow-hidden rounded-2xl border border-line bg-panel"><Link href={`/wallpapers/${wallpaper.slug}`} className="block"><div className="relative aspect-[9/16] overflow-hidden bg-black"><Image src={wallpaper.thumbnailUrl} alt={wallpaper.altText} fill priority={priority} sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw" className="object-cover transition duration-300 group-hover:scale-105"/></div><div className="p-3"><h3 className="truncate font-semibold">{wallpaper.title}</h3><p className="mt-1 text-xs text-muted">{wallpaper.width} × {wallpaper.height} · {wallpaper.categories[0]?.category.name ?? "Wallpaper"}</p></div></Link></article>; }

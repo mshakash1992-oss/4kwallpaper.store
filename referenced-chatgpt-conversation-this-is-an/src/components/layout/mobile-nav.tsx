@@ -1,0 +1,3 @@
+import Link from "next/link";
+import { Compass, Home, Search } from "lucide-react";
+export function MobileNav() { return <nav aria-label="Mobile navigation" className="fixed inset-x-0 bottom-0 z-40 flex justify-around border-t border-line bg-panel/95 py-2 backdrop-blur md:hidden"><Link className="flex min-h-11 flex-col items-center justify-center gap-0.5 text-xs" href="/"><Home size={18}/>Home</Link><Link className="flex min-h-11 flex-col items-center justify-center gap-0.5 text-xs" href="/categories"><Compass size={18}/>Explore</Link><Link className="flex min-h-11 flex-col items-center justify-center gap-0.5 text-xs" href="/search"><Search size={18}/>Search</Link></nav>; }

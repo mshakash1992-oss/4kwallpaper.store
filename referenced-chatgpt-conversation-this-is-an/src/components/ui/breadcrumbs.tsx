@@ -1,0 +1,2 @@
+import Link from "next/link";
+export function Breadcrumbs({ items }: { items: { label: string; href?: string }[] }) { return <nav aria-label="Breadcrumb" className="mb-5 text-sm text-muted"><ol className="flex flex-wrap gap-2">{items.map((item, index) => <li className="flex gap-2" key={item.label}>{index > 0 && <span aria-hidden>/</span>}{item.href ? <Link className="hover:text-white" href={item.href}>{item.label}</Link> : <span aria-current="page">{item.label}</span>}</li>)}</ol></nav>; }

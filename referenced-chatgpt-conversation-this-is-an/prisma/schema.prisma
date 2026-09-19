@@ -1,0 +1,81 @@
+generator client { provider = "prisma-client-js" }
+datasource db { provider = "postgresql"; url = env("DATABASE_URL") }
+
+enum Role { USER ADMIN }
+enum WallpaperStatus { DRAFT REVIEW PUBLISHED ARCHIVED }
+enum AssetKind { ORIGINAL DISPLAY THUMBNAIL }
+
+model User {
+  id String @id @default(cuid())
+  email String @unique
+  name String?
+  role Role @default(USER)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  downloads Download[]
+  uploadedWallpapers Wallpaper[] @relation("Uploader")
+}
+model Wallpaper {
+  id String @id @default(cuid())
+  title String
+  slug String @unique
+  description String @db.Text
+  imageUrl String
+  thumbnailUrl String
+  originalUrl String
+  width Int
+  height Int
+  fileSize Int
+  mimeType String
+  altText String
+  status WallpaperStatus @default(DRAFT)
+  views Int @default(0)
+  downloads Int @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  publishedAt DateTime?
+  uploaderId String?
+  uploader User? @relation("Uploader", fields:[uploaderId], references:[id], onDelete:SetNull)
+  categories WallpaperCategory[]
+  tags WallpaperTag[]
+  collections CollectionWallpaper[]
+  downloadsLog Download[]
+  assets WallpaperAsset[]
+  @@index([status, publishedAt])
+  @@index([views])
+}
+model WallpaperAsset {
+  id String @id @default(cuid())
+  wallpaperId String
+  kind AssetKind
+  url String
+  width Int
+  height Int
+  mimeType String
+  bytes Int
+  wallpaper Wallpaper @relation(fields:[wallpaperId], references:[id], onDelete:Cascade)
+  @@unique([wallpaperId, kind, mimeType])
+}
+model Category {
+  id String @id @default(cuid())
+  name String @unique
+  slug String @unique
+  description String @db.Text
+  image String?
+  seoTitle String?
+  seoDescription String?
+  parentId String?
+  sortOrder Int @default(0)
+  parent Category? @relation("CategoryTree", fields:[parentId], references:[id], onDelete:SetNull)
+  children Category[] @relation("CategoryTree")
+  wallpapers WallpaperCategory[]
+  @@index([parentId, sortOrder])
+}
+model Tag { id String @id @default(cuid()); name String @unique; slug String @unique; wallpapers WallpaperTag[] }
+model WallpaperTag { wallpaperId String; tagId String; wallpaper Wallpaper @relation(fields:[wallpaperId], references:[id], onDelete:Cascade); tag Tag @relation(fields:[tagId], references:[id], onDelete:Cascade); @@id([wallpaperId, tagId]); @@index([tagId]) }
+model WallpaperCategory { wallpaperId String; categoryId String; wallpaper Wallpaper @relation(fields:[wallpaperId], references:[id], onDelete:Cascade); category Category @relation(fields:[categoryId], references:[id], onDelete:Cascade); @@id([wallpaperId, categoryId]); @@index([categoryId]) }
+model Collection { id String @id @default(cuid()); name String; slug String @unique; description String @db.Text; seoTitle String?; seoDescription String?; coverImage String?; createdAt DateTime @default(now()); updatedAt DateTime @updatedAt; wallpapers CollectionWallpaper[] }
+model CollectionWallpaper { collectionId String; wallpaperId String; position Int @default(0); collection Collection @relation(fields:[collectionId], references:[id], onDelete:Cascade); wallpaper Wallpaper @relation(fields:[wallpaperId], references:[id], onDelete:Cascade); @@id([collectionId, wallpaperId]); @@index([collectionId, position]) }
+model Download { id String @id @default(cuid()); wallpaperId String; userId String?; createdAt DateTime @default(now()); userAgent String?; ipHash String?; wallpaper Wallpaper @relation(fields:[wallpaperId], references:[id], onDelete:Cascade); user User? @relation(fields:[userId], references:[id], onDelete:SetNull); @@index([wallpaperId, createdAt]) }
+model SearchQuery { id String @id @default(cuid()); query String; resultCount Int; createdAt DateTime @default(now()); @@index([query]); @@index([createdAt]) }
+model SiteSetting { key String @id; value String @db.Text; updatedAt DateTime @updatedAt }

@@ -1,0 +1,4 @@
+import { db } from "@/lib/prisma";
+import { siteUrl } from "@/lib/env";
+export async function GET() { const wallpapers = await db.wallpaper.findMany({ where: { status: "PUBLISHED" }, select: { slug: true, imageUrl: true, altText: true } }); const xml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">${wallpapers.map((wallpaper) => `<url><loc>${siteUrl()}/wallpapers/${wallpaper.slug}</loc><image:image><image:loc>${wallpaper.imageUrl}</image:loc><image:title>${escapeXml(wallpaper.altText)}</image:title></image:image></url>`).join("")}</urlset>`; return new Response(xml, { headers: { "Content-Type": "application/xml", "Cache-Control": "public, s-maxage=3600" } }); }
+function escapeXml(value: string) { return value.replace(/[<>&'\"]/g, (character) => ({ "<": "&lt;", ">": "&gt;", "&": "&amp;", "'": "&apos;", "\"": "&quot;" })[character] ?? character); }

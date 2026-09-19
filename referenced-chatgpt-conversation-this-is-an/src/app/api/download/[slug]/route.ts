@@ -1,0 +1,3 @@
+import { NextResponse } from "next/server";
+import { db } from "@/lib/prisma";
+export async function GET(_: Request, { params }: { params: Promise<{ slug: string }> }) { const wallpaper = await db.wallpaper.findFirst({ where: { slug: (await params).slug, status: "PUBLISHED" }, select: { id: true, originalUrl: true } }); if (!wallpaper) return new NextResponse("Not found", { status: 404 }); await db.$transaction([db.wallpaper.update({ where: { id: wallpaper.id }, data: { downloads: { increment: 1 } } }), db.download.create({ data: { wallpaperId: wallpaper.id } })]); return NextResponse.redirect(wallpaper.originalUrl, { status: 302 }); }
