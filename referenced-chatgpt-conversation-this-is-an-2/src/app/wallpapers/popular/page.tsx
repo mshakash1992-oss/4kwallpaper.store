@@ -1,0 +1,1 @@
+import { FilterPage } from "@/features/wallpapers/filter-page"; import { pageMetadata } from "@/lib/seo"; export const revalidate=3600; export const metadata=pageMetadata({title:"Popular Mobile Wallpapers",description:"Browse the most downloaded phone wallpapers.",path:"/wallpapers/popular"}); export default function Page(){return <FilterPage filter="popular"/>}

@@ -1,0 +1,2 @@
+import Link from "next/link";
+export default function NotFound(){return <section className="py-24 text-center"><p className="text-violet-300">404</p><h1 className="mt-2 text-4xl font-black">This wallpaper is out of frame.</h1><p className="mt-3 text-zinc-400">It may have moved, been removed, or never existed.</p><Link href="/" className="mt-7 inline-block rounded-xl bg-violet-500 px-5 py-3 font-bold">Explore wallpapers</Link></section>}

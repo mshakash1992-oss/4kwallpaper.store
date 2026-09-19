@@ -1,0 +1,3 @@
+import Link from "next/link"; import { pageMetadata } from "@/lib/seo";
+export const metadata=pageMetadata({title:"Wallpaper guides",description:"Guides for choosing and setting beautiful mobile wallpapers.",path:"/blog"});
+export default function Blog(){return <section className="py-8"><h1 className="text-3xl font-black">Wallpaper guides</h1><article className="mt-6 rounded-2xl border border-white/10 p-5"><p className="text-sm text-violet-300">Guide</p><h2 className="mt-1 text-xl font-bold"><Link href="/blog/how-to-choose-phone-wallpaper">How to choose the right phone wallpaper</Link></h2><p className="mt-2 text-zinc-400">A simple guide to clarity, contrast and screen-friendly composition.</p></article></section>}

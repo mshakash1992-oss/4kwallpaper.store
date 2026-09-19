@@ -1,0 +1,3 @@
+import { z } from "zod";
+export const wallpaperDraftSchema = z.object({ title:z.string().min(3).max(120), description:z.string().min(20).max(2000), altText:z.string().min(8).max(180), categoryIds:z.array(z.string().cuid()).min(1).max(5), tagIds:z.array(z.string().cuid()).max(12), status:z.enum(["DRAFT","PENDING_REVIEW","PUBLISHED"]) });
+export const uploadSchema = z.object({ filename:z.string().min(1).max(180), mimeType:z.enum(["image/jpeg","image/png","image/webp","image/avif"]), size:z.number().int().positive().max(25*1024*1024), width:z.number().int().min(720).max(10000), height:z.number().int().min(1280).max(10000) });

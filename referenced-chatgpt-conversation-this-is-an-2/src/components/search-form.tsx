@@ -1,0 +1,5 @@
+"use client";
+import { Search } from "lucide-react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { FormEvent, useState } from "react";
+export function SearchForm({ large = false }: { large?: boolean }) { const router = useRouter(); const params = useSearchParams(); const [query, setQuery] = useState(params.get("q") ?? ""); function submit(event: FormEvent) { event.preventDefault(); router.push(`/search?q=${encodeURIComponent(query.trim())}`); } return <form onSubmit={submit} className={`relative ${large ? "max-w-2xl" : "w-full max-w-md"}`}><label className="sr-only" htmlFor="site-search">Search wallpapers</label><Search aria-hidden className="pointer-events-none absolute left-4 top-1/2 size-5 -translate-y-1/2 text-zinc-400"/><input id="site-search" value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Search wallpapers" className={`w-full rounded-2xl border border-white/15 bg-zinc-950/70 pl-12 pr-4 text-white outline-none ring-violet-400 transition placeholder:text-zinc-500 focus:border-violet-400 focus:ring-2 ${large ? "h-14 text-base" : "h-11 text-sm"}`}/></form>; }

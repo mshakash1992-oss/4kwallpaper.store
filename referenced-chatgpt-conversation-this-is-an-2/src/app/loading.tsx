@@ -1,0 +1,1 @@
+export default function Loading(){return <div className="grid grid-cols-2 gap-3 py-10 sm:grid-cols-4">{Array.from({length:8}).map((_,index)=><div key={index} className="aspect-[9/16] animate-pulse rounded-2xl bg-white/10"/>)}</div>}

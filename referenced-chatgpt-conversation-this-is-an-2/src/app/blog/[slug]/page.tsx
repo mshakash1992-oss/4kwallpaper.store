@@ -1,0 +1,4 @@
+import { notFound } from "next/navigation"; import { pageMetadata } from "@/lib/seo";
+const posts={"how-to-choose-phone-wallpaper":{title:"How to choose the right phone wallpaper",description:"Choose a beautiful, readable wallpaper with this practical guide."}};
+export async function generateMetadata({params}:{params:Promise<{slug:string}>}){const {slug}=await params;const post=posts[slug as keyof typeof posts];return post?pageMetadata({title:post.title,description:post.description,path:`/blog/${slug}`}):{}}
+export default async function Post({params}:{params:Promise<{slug:string}>}){const {slug}=await params;const post=posts[slug as keyof typeof posts];if(!post)notFound();return <article className="prose prose-invert mx-auto py-10"><h1>{post.title}</h1><p>Choose a portrait image with a clear subject, enough quiet space around icons, and contrast that suits your device’s display.</p></article>}

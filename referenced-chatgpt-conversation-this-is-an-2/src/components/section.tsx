@@ -1,0 +1,2 @@
+import Link from "next/link";
+export function Section({ title, href, children }: { title: string; href?: string; children: React.ReactNode }) { return <section className="py-7 md:py-10"><div className="mb-4 flex items-end justify-between"><h2 className="text-xl font-bold tracking-tight md:text-2xl">{title}</h2>{href && <Link href={href} className="text-sm font-medium text-violet-300 hover:text-violet-200">View all</Link>}</div>{children}</section>; }

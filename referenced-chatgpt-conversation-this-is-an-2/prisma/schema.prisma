@@ -1,0 +1,118 @@
+generator client { provider = "prisma-client-js" }
+datasource db { provider = "postgresql"; url = env("DATABASE_URL") }
+
+enum Role { USER EDITOR ADMIN }
+enum WallpaperStatus { DRAFT PENDING_REVIEW PUBLISHED ARCHIVED REJECTED }
+enum DeviceTarget { UNIVERSAL IPHONE ANDROID }
+enum ImageFormat { JPEG PNG WEBP AVIF }
+
+model User {
+  id String @id @default(cuid())
+  email String @unique
+  name String?
+  image String?
+  role Role @default(USER)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  uploadedWallpapers Wallpaper[] @relation("Uploader")
+  downloads Download[]
+  @@index([role])
+}
+
+model Wallpaper {
+  id String @id @default(cuid())
+  title String
+  slug String @unique
+  description String @db.Text
+  altText String
+  imageUrl String
+  thumbnailUrl String
+  originalUrl String
+  storageKey String @unique
+  variants Json @default("[]")
+  width Int
+  height Int
+  fileSize Int
+  mimeType String
+  format ImageFormat
+  dominantColor String?
+  deviceTarget DeviceTarget @default(UNIVERSAL)
+  status WallpaperStatus @default(DRAFT)
+  isAmoled Boolean @default(false)
+  isFeatured Boolean @default(false)
+  views Int @default(0)
+  downloads Int @default(0)
+  seoTitle String?
+  seoDescription String?
+  license String?
+  sourceName String?
+  sourceUrl String?
+  uploaderId String?
+  uploader User? @relation("Uploader", fields: [uploaderId], references: [id], onDelete: SetNull)
+  categories WallpaperCategory[]
+  tags WallpaperTag[]
+  collections CollectionWallpaper[]
+  downloadEvents Download[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  publishedAt DateTime?
+  @@index([status, publishedAt(sort: Desc)])
+  @@index([isFeatured, status])
+  @@index([deviceTarget, status])
+  @@index([downloads(sort: Desc)])
+  @@index([views(sort: Desc)])
+}
+
+model Category {
+  id String @id @default(cuid())
+  name String
+  slug String @unique
+  description String @db.Text
+  image String?
+  seoTitle String?
+  seoDescription String?
+  parentId String?
+  parent Category? @relation("CategoryTree", fields: [parentId], references: [id], onDelete: SetNull)
+  children Category[] @relation("CategoryTree")
+  sortOrder Int @default(0)
+  isFeatured Boolean @default(false)
+  wallpapers WallpaperCategory[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  @@index([parentId, sortOrder])
+  @@index([isFeatured, sortOrder])
+}
+
+model Tag {
+  id String @id @default(cuid())
+  name String
+  slug String @unique
+  description String?
+  wallpapers WallpaperTag[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  @@index([name])
+}
+
+model WallpaperTag { wallpaperId String; tagId String; wallpaper Wallpaper @relation(fields:[wallpaperId], references:[id], onDelete: Cascade); tag Tag @relation(fields:[tagId], references:[id], onDelete: Cascade); @@id([wallpaperId, tagId]); @@index([tagId]) }
+model WallpaperCategory { wallpaperId String; categoryId String; wallpaper Wallpaper @relation(fields:[wallpaperId], references:[id], onDelete: Cascade); category Category @relation(fields:[categoryId], references:[id], onDelete: Cascade); @@id([wallpaperId, categoryId]); @@index([categoryId]) }
+
+model Collection {
+  id String @id @default(cuid())
+  name String
+  slug String @unique
+  description String @db.Text
+  coverImage String?
+  seoTitle String?
+  seoDescription String?
+  isPublished Boolean @default(false)
+  sortOrder Int @default(0)
+  wallpapers CollectionWallpaper[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  @@index([isPublished, sortOrder])
+}
+model CollectionWallpaper { collectionId String; wallpaperId String; position Int @default(0); collection Collection @relation(fields:[collectionId], references:[id], onDelete: Cascade); wallpaper Wallpaper @relation(fields:[wallpaperId], references:[id], onDelete: Cascade); @@id([collectionId, wallpaperId]); @@index([collectionId, position]) }
+
+model Download { id String @id @default(cuid()); wallpaperId String; userId String?; ipHash String?; userAgent String?; resolution String?; createdAt DateTime @default(now()); wallpaper Wallpaper @relation(fields:[wallpaperId], references:[id], onDelete:Cascade); user User? @relation(fields:[userId], references:[id], onDelete:SetNull); @@index([wallpaperId, createdAt(sort: Desc)]); @@index([createdAt(sort: Desc)]) }
+model SearchQuery { id String @id @default(cuid()); query String; normalizedQuery String; resultCount Int @default(0); ipHash String?; createdAt DateTime @default(now()); @@index([normalizedQuery]); @@index([createdAt(sort: Desc)]) }

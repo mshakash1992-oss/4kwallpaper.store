@@ -1,0 +1,1 @@
+import { FilterPage } from "@/features/wallpapers/filter-page"; import { pageMetadata } from "@/lib/seo"; export const revalidate=3600; export const metadata=pageMetadata({title:"Latest Mobile Wallpapers",description:"Browse the newest HD and 4K mobile wallpapers.",path:"/wallpapers/latest"}); export default function Page(){return <FilterPage filter="latest"/>}

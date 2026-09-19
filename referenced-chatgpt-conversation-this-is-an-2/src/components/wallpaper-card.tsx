@@ -1,0 +1,5 @@
+import Image from "next/image";
+import Link from "next/link";
+import type { Wallpaper } from "@/lib/data";
+import { formatNumber } from "@/lib/utils";
+export function WallpaperCard({ wallpaper, priority = false }: { wallpaper: Wallpaper; priority?: boolean }) { return <article className="group overflow-hidden rounded-2xl border border-white/10 bg-white/[.03] shadow-sm transition hover:-translate-y-0.5 hover:border-white/20"><Link href={`/wallpapers/${wallpaper.slug}`} className="block"><div className="relative aspect-[9/16] overflow-hidden bg-zinc-900"><Image src={wallpaper.thumbnailUrl} alt={wallpaper.altText} fill priority={priority} sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 20vw" className="object-cover transition duration-500 group-hover:scale-105" /></div><div className="p-3"><h3 className="truncate font-semibold text-sm">{wallpaper.title}</h3><p className="mt-1 text-xs text-zinc-400">{wallpaper.isAmoled ? "AMOLED" : "4K HD"} · {formatNumber(wallpaper.downloads)} downloads</p></div></Link></article>; }

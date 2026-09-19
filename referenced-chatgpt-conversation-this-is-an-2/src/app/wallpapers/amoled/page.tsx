@@ -1,0 +1,1 @@
+import { FilterPage } from "@/features/wallpapers/filter-page"; import { pageMetadata } from "@/lib/seo"; export const revalidate=3600; export const metadata=pageMetadata({title:"AMOLED Wallpapers",description:"Deep black AMOLED wallpapers made for OLED phone displays.",path:"/wallpapers/amoled"}); export default function Page(){return <FilterPage filter="amoled"/>}

@@ -1,0 +1,1 @@
+import { FilterPage } from "@/features/wallpapers/filter-page"; import { pageMetadata } from "@/lib/seo"; export const revalidate=3600; export const metadata=pageMetadata({title:"HD Mobile Wallpapers",description:"Browse crisp HD phone wallpapers.",path:"/wallpapers/hd"}); export default function Page(){return <FilterPage filter="hd"/>}

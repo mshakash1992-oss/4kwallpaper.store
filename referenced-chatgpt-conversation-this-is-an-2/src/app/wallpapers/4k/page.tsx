@@ -1,0 +1,1 @@
+import { FilterPage } from "@/features/wallpapers/filter-page"; import { pageMetadata } from "@/lib/seo"; export const revalidate=3600; export const metadata=pageMetadata({title:"4K Mobile Wallpapers",description:"Browse sharp 4K phone wallpapers for iPhone and Android.",path:"/wallpapers/4k"}); export default function Page(){return <FilterPage filter="4k"/>}

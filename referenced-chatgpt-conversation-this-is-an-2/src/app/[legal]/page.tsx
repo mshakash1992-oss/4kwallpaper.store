@@ -1,0 +1,5 @@
+import { notFound } from "next/navigation";
+import { pageMetadata } from "@/lib/seo";
+const content:Record<string,{title:string;body:string}>={"privacy-policy":{title:"Privacy policy",body:"We collect only the information needed to operate the service, improve search quality and protect against abuse."},terms:{title:"Terms of use",body:"Use downloaded wallpapers subject to the license displayed on each item. Do not redistribute images as your own collection."},dmca:{title:"DMCA",body:"To report a copyright concern, email hello@aurorawallpapers.com with the original work, the relevant URL and your authority to act."}};
+export async function generateMetadata({params}:{params:Promise<{legal:string}>}){const {legal}=await params;const page=content[legal];return page?pageMetadata({title:page.title,description:page.body,path:`/${legal}`}):{}}
+export default async function Legal({params}:{params:Promise<{legal:string}>}){const {legal}=await params;const page=content[legal];if(!page)notFound();return <article className="prose prose-invert mx-auto py-10"><h1>{page.title}</h1><p>{page.body}</p></article>}

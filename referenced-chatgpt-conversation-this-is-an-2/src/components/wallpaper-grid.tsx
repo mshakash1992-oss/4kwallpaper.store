@@ -1,0 +1,3 @@
+import type { Wallpaper } from "@/lib/data";
+import { WallpaperCard } from "@/components/wallpaper-card";
+export function WallpaperGrid({ wallpapers, priority = false }: { wallpapers: Wallpaper[]; priority?: boolean }) { return wallpapers.length ? <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">{wallpapers.map((wallpaper, index) => <WallpaperCard key={wallpaper.id} wallpaper={wallpaper} priority={priority && index < 2} />)}</div> : <div className="rounded-2xl border border-dashed border-white/15 p-10 text-center text-zinc-400">No wallpapers found. Try a broader search.</div>; }

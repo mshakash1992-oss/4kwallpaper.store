@@ -1,0 +1,1 @@
+import { FilterPage } from "@/features/wallpapers/filter-page"; import { pageMetadata } from "@/lib/seo"; export const revalidate=3600; export const metadata=pageMetadata({title:"Trending Mobile Wallpapers",description:"Discover trending phone wallpapers in HD and 4K.",path:"/wallpapers/trending"}); export default function Page(){return <FilterPage filter="trending"/>}
