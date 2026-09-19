@@ -1,2 +1,0 @@
-import Link from "next/link";
-export function SiteFooter() { return <footer className="mt-16 border-t border-line py-10 text-sm text-muted"><div className="container-page flex flex-col justify-between gap-5 sm:flex-row"><p>© {new Date().getFullYear()} Wallora. Fresh screens, every day.</p><nav className="flex flex-wrap gap-x-5 gap-y-2"><Link href="/about">About</Link><Link href="/contact">Contact</Link><Link href="/privacy-policy">Privacy</Link><Link href="/terms">Terms</Link><Link href="/dmca">DMCA</Link></nav></div></footer>; }

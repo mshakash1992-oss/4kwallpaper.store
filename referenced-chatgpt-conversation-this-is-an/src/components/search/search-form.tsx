@@ -1,5 +1,0 @@
-"use client";
-import { useRouter, useSearchParams } from "next/navigation";
-import { FormEvent, useState } from "react";
-import { Search } from "lucide-react";
-export function SearchForm({ hero = false }: { hero?: boolean }) { const router = useRouter(); const params = useSearchParams(); const [query, setQuery] = useState(params.get("q") ?? ""); function submit(event: FormEvent) { event.preventDefault(); const clean = query.trim(); if (clean) router.push(`/search?q=${encodeURIComponent(clean)}`); } return <form onSubmit={submit} className={`flex ${hero ? "max-w-2xl" : ""} rounded-2xl border border-line bg-panel p-1`} role="search"><label className="sr-only" htmlFor="wallpaper-search">Search wallpapers</label><input id="wallpaper-search" value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Search anime, nature, cars…" className="min-h-12 min-w-0 flex-1 bg-transparent px-4 text-sm outline-none"/><button className="flex min-h-12 items-center gap-2 rounded-xl bg-brand px-4 font-bold text-black" type="submit"><Search size={18}/><span className="hidden sm:inline">Search</span></button></form>; }

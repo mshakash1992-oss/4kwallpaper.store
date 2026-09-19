@@ -1,1 +1,0 @@
-export default function Loading() { return <div className="container-page py-20"><div className="h-8 w-52 animate-pulse rounded bg-panel"/><div className="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-4">{Array.from({ length: 8 }, (_, i) => <div className="aspect-[9/16] animate-pulse rounded-2xl bg-panel" key={i}/>)}</div></div>; }

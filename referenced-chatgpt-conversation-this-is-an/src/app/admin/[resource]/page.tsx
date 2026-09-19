@@ -1,3 +1,0 @@
-import { notFound } from "next/navigation";
-const resources = new Set(["wallpapers", "categories", "tags", "collections", "users", "downloads", "search-queries", "seo-settings"]);
-export default async function AdminResource({ params }: { params: Promise<{ resource: string }> }) { const { resource } = await params; if (!resources.has(resource)) notFound(); return <><p className="eyebrow">Admin management</p><h1 className="mt-2 text-3xl font-black">{resource.replace(/-/g, " ")}</h1><div className="surface mt-7 p-6 text-muted">This module is ready for its resource-specific management table and editor. Connect each control to the role-protected server actions/API layer before enabling it for staff.</div></>; }
